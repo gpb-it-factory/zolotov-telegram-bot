@@ -19,4 +19,5 @@ This component will act as frontend for a Mini-Bank project. Whole system will c
 
 # Usage
 
-There will be info about usage of bot
+The bot is located in the zolbot folder.
+To run in locally you need to insert your bot name and token into [application.yml file](zolbot%2Fsrc%2Fmain%2Fresources%2Fapplication.yml).
