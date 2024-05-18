@@ -1,4 +1,4 @@
-package com.example.zolbot
+package ru.gpb.zolbot
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
