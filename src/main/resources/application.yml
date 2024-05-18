@@ -2,5 +2,5 @@ spring:
   application:
     name: zolbot
 telegram:
-  botName: #insert bot name here
-  token: #insert token here
+  botName: ${BOT_NAME}
+  token: ${BOT_TOKEN}
