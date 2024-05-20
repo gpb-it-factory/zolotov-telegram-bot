@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration
 import org.telegram.telegrambots.meta.TelegramBotsApi
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
 import ru.gpb.zolbot.bot.ZolotovBot
-import ru.gpb.zolbot.reply.ReplyHandler
 
 @Configuration
 class Configuration {
@@ -14,9 +13,4 @@ class Configuration {
         TelegramBotsApi(DefaultBotSession::class.java).apply {
             registerBot(bot)
         }
-
-    @Bean
-    fun replyHandler(): ReplyHandler {
-        return ReplyHandler()
-    }
 }

@@ -1,6 +1,5 @@
 package ru.gpb.zolbot.bot
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
@@ -11,7 +10,6 @@ import ru.gpb.zolbot.reply.ReplyHandler
 class ZolotovBot(
     @Value("\${telegram.token}")
     private val token: String,
-    @Autowired
     private val replyHandler: ReplyHandler
 ) : TelegramLongPollingBot(token) {
     @Value("\${telegram.botName}")
