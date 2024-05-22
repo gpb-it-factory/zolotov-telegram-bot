@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: zolbot
+telegram:
+  botName: ${BOT_NAME}
+  token: ${BOT_TOKEN}
