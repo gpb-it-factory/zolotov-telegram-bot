@@ -24,6 +24,5 @@ class ReplyHandler(list: List<ReplyStrategy>) {
             MessageUtils.createSendMessage("Only text allowed!", update.message.chatId)
         }
             .also { logger.info("Reply is sent to user") }
-
     }
 }

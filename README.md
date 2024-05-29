@@ -22,3 +22,4 @@ This component will act as frontend for a Mini-Bank project. Whole system will c
 To run in locally you need to insert your bot name and token into [application.yml file](zolbot%2Fsrc%2Fmain%2Fresources%2Fapplication.yml).
 
 Then type `./gradlew bootRun`
+
