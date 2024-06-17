@@ -12,29 +12,30 @@ import ru.gpb.zolbot.reply.ReplyHandler
 @SpringBootTest
 class ZolbotApplicationTests {
 
-	@Autowired
-	private lateinit var replyHandler: ReplyHandler
+    @Autowired
+    private lateinit var replyHandler: ReplyHandler
 
-	@Test
-	fun testStart() {
-		val update = mockk<Update>()
+    @Test
+    fun testStart() {
+        val update = mockk<Update>()
 
-		every { update.hasMessage() } returns true
-		every { update.message.hasText() } returns true
-		every { update.message.text } returns "/start"
-		every { update.message.chatId } returns 1L
+        every { update.hasMessage() } returns true
+        every { update.message.hasText() } returns true
+        every { update.message.text } returns "/start"
+        every { update.message.chatId } returns 1L
 
-		assertEquals("Welcome in my GPB telegram bot", replyHandler.handleUpdate(update).text)
-	}
+        assertEquals("Welcome in my GPB telegram bot", replyHandler.handleUpdate(update).text)
+    }
 
-	@Test
-	fun testPing() {
-		val update = mockk<Update>()
+    @Test
+    fun testPing() {
+        val update = mockk<Update>()
 
-		every { update.hasMessage() } returns true
-		every { update.message.hasText() } returns true
-		every { update.message.text } returns "/ping"
-		every { update.message.chatId } returns 1L
+        every { update.hasMessage() } returns true
+        every { update.message.hasText() } returns true
+        every { update.message.text } returns "/ping"
+        every { update.message.chatId } returns 1L
 
-		assertEquals("pong", replyHandler.handleUpdate(update).text)
-	}
+        assertEquals("pong", replyHandler.handleUpdate(update).text)
+    }
+}
