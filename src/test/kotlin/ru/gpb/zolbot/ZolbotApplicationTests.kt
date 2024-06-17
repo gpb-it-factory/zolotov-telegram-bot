@@ -38,5 +38,3 @@ class ZolbotApplicationTests {
 
 		assertEquals("pong", replyHandler.handleUpdate(update).text)
 	}
-
-}
