@@ -1,31 +1,50 @@
 package ru.gpb.zolbot.service
 
 import org.slf4j.LoggerFactory
-import org.springframework.http.ResponseEntity
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
-import org.springframework.web.client.RestTemplate
+import org.springframework.web.reactive.function.client.ClientResponse
+import org.springframework.web.reactive.function.client.WebClient
+import reactor.core.publisher.Mono
 import ru.gpb.zolbot.models.User
+import java.time.Duration
 
 @Service
-class RegisterService(private val restTemplate: RestTemplate) {
+class RegisterService(private val webClient: WebClient) {
 
     private val logger = LoggerFactory.getLogger(RegisterService::class.java)
 
     fun registerUser(user: User): FrontApiResponse {
         logger.info("Sending user to middle layer")
-        val response = restTemplate.postForEntity("/register", user, Response::class.java)
-        return transform(response)
+        val response = webClient.post()
+            .uri("/register")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(Mono.just(user), User::class.java)
+            .exchangeToMono { transformResponseByCodes(it) }
+            .timeout(Duration.ofSeconds(5))
+
+        return try {
+            response.block() ?: FrontApiResponse.Error()
+        } catch (e: Exception) {
+            FrontApiResponse.Error()
+        }
     }
 
-    private fun transform(item: ResponseEntity<Response>): FrontApiResponse {
-        return when {
-            item.statusCode.is2xxSuccessful -> FrontApiResponse.Success()
+    private fun transformResponseByCodes(item: ClientResponse): Mono<FrontApiResponse> {
 
-            item.statusCode.is4xxClientError -> {
-                FrontApiResponse.Problem()
+        return when {
+            item.statusCode().isSameCodeAs(HttpStatus.NO_CONTENT) -> {
+                Mono.just(FrontApiResponse.Success())
             }
 
-            else -> FrontApiResponse.Error()
+            item.statusCode().isSameCodeAs(HttpStatus.CONFLICT) -> {
+                item.bodyToMono(FrontApiResponse.Problem::class.java)
+            }
+
+            else -> {
+                item.bodyToMono(FrontApiResponse.Error::class.java)
+            }
         }
     }
 }

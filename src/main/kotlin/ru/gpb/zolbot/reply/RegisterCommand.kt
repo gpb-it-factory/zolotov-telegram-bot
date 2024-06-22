@@ -24,7 +24,7 @@ class RegisterCommand(private val registerService: RegisterService) : ReplyStrat
             }
 
             is FrontApiResponse.Problem -> {
-                MessageUtils.createSendMessage("User already register", update.message.chatId)
+                MessageUtils.createSendMessage("User already registered", update.message.chatId)
             }
 
             is FrontApiResponse.Error -> {
