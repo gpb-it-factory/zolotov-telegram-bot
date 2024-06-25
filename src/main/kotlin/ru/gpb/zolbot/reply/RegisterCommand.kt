@@ -6,7 +6,6 @@ import org.telegram.telegrambots.meta.api.objects.Update
 import ru.gpb.zolbot.models.User
 import ru.gpb.zolbot.service.FrontApiResponse
 import ru.gpb.zolbot.service.RegisterService
-import ru.gpb.zolbot.utils.Commands
 import ru.gpb.zolbot.utils.MessageUtils
 
 @Component
@@ -33,5 +32,5 @@ class RegisterCommand(private val registerService: RegisterService) : ReplyStrat
         }
     }
 
-    override fun command(): Commands = Commands.REGISTER
+    override fun command() = "/register"
 }
