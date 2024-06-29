@@ -10,7 +10,7 @@ import ru.gpb.zolbot.utils.MessageUtils
 class ReplyHandler(list: List<ReplyStrategy>) {
     private val logger = LoggerFactory.getLogger(ReplyHandler::class.java)
 
-    private var map: Map<String, ReplyStrategy> = list.associateBy { it.command().text }
+    private var map: Map<String, ReplyStrategy> = list.associateBy { it.command() }
 
     fun handleUpdate(update: Update): SendMessage {
         return if (update.message.hasText()) {
