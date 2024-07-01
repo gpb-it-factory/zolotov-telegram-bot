@@ -1,4 +1,4 @@
-package ru.gpb.zolbot.service
+package ru.gpb.zolbot.service.create
 
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -11,39 +11,43 @@ import ru.gpb.zolbot.models.User
 import java.time.Duration
 
 @Service
-class RegisterService(private val webClient: WebClient) {
+class CreateService(private val webClient: WebClient) {
 
-    private val logger = LoggerFactory.getLogger(RegisterService::class.java)
+    private val logger = LoggerFactory.getLogger(CreateService::class.java)
 
-    fun registerUser(user: User): FrontApiResponse {
+    fun createAccount(user: User): FrontApiCreateResponse {
         logger.info("Sending user to middle layer")
         val response = webClient.post()
-            .uri("/register")
+            .uri("/createaccount")
             .contentType(MediaType.APPLICATION_JSON)
             .body(Mono.just(user), User::class.java)
             .exchangeToMono { transformResponseByCodes(it) }
             .timeout(Duration.ofSeconds(5))
 
         return try {
-            response.block() ?: FrontApiResponse.Error()
+            response.block() ?: FrontApiCreateResponse.Error()
         } catch (e: Exception) {
-            FrontApiResponse.Error()
+            FrontApiCreateResponse.Error()
         }
     }
 
-    private fun transformResponseByCodes(item: ClientResponse): Mono<FrontApiResponse> {
+    private fun transformResponseByCodes(item: ClientResponse): Mono<FrontApiCreateResponse> {
 
         return when {
             item.statusCode().isSameCodeAs(HttpStatus.NO_CONTENT) -> {
-                Mono.just(FrontApiResponse.Success())
+                Mono.just(FrontApiCreateResponse.Success())
+            }
+
+            item.statusCode().isSameCodeAs(HttpStatus.FORBIDDEN) -> {
+                item.bodyToMono(FrontApiCreateResponse.Register::class.java)
             }
 
             item.statusCode().isSameCodeAs(HttpStatus.CONFLICT) -> {
-                item.bodyToMono(FrontApiResponse.Problem::class.java)
+                item.bodyToMono(FrontApiCreateResponse.Problem::class.java)
             }
 
             else -> {
-                item.bodyToMono(FrontApiResponse.Error::class.java)
+                item.bodyToMono(FrontApiCreateResponse.Error::class.java)
             }
         }
     }

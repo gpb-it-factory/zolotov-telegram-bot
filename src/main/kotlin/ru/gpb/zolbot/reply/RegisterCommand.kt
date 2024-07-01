@@ -4,8 +4,8 @@ import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import ru.gpb.zolbot.models.User
-import ru.gpb.zolbot.service.FrontApiResponse
-import ru.gpb.zolbot.service.RegisterService
+import ru.gpb.zolbot.service.register.FrontApiReisterResponse
+import ru.gpb.zolbot.service.register.RegisterService
 import ru.gpb.zolbot.utils.MessageUtils
 
 @Component
@@ -15,18 +15,18 @@ class RegisterCommand(private val registerService: RegisterService) : ReplyStrat
         val operationCode = registerService.registerUser(User(update.message.from.id, update.message.from.userName))
 
         return when (operationCode) {
-            is FrontApiResponse.Success -> {
+            is FrontApiReisterResponse.Success -> {
                 MessageUtils.createSendMessage(
                     "User created",
                     update.message.chatId
                 )
             }
 
-            is FrontApiResponse.Problem -> {
+            is FrontApiReisterResponse.Problem -> {
                 MessageUtils.createSendMessage("User already registered", update.message.chatId)
             }
 
-            is FrontApiResponse.Error -> {
+            is FrontApiReisterResponse.Error -> {
                 MessageUtils.createSendMessage("Unexpected error on server", update.message.chatId)
             }
         }

@@ -14,8 +14,8 @@ import reactor.core.publisher.Mono
 import ru.gpb.zolbot.models.User
 import ru.gpb.zolbot.reply.RegisterCommand
 import ru.gpb.zolbot.reply.ReplyHandler
-import ru.gpb.zolbot.service.FrontApiResponse
-import ru.gpb.zolbot.service.RegisterService
+import ru.gpb.zolbot.service.register.FrontApiReisterResponse
+import ru.gpb.zolbot.service.register.RegisterService
 
 @SpringBootTest
 class ZolbotApplicationTests {
@@ -66,13 +66,13 @@ class ZolbotApplicationTests {
                 .uri("/register")
                 .contentType(any())
                 .body(any(), User::class.java)
-                .exchangeToMono<FrontApiResponse>(any())
+                .exchangeToMono<FrontApiReisterResponse>(any())
                 .timeout(any())
         } answers {
             when (testCount++) {
-                1 -> Mono.just(FrontApiResponse.Success())
-                2 -> Mono.just(FrontApiResponse.Problem())
-                else -> Mono.just(FrontApiResponse.Error())
+                1 -> Mono.just(FrontApiReisterResponse.Success())
+                2 -> Mono.just(FrontApiReisterResponse.Problem())
+                else -> Mono.just(FrontApiReisterResponse.Error())
             }
         }
 
